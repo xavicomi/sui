@@ -3,7 +3,6 @@ const {DEFAULT_BROWSER_TARGETS} = require('./defaults')
 
 function getTargets({targets = {}}) {
   const {browser = DEFAULT_BROWSER_TARGETS} = targets
-
   return browser
 }
 
@@ -37,6 +36,7 @@ function presets(api, opts = {}) {
     [
       require('@babel/preset-env').default,
       {
+        bugfixes: true,
         debug: false,
         ignoreBrowserslistConfig: true,
         loose: true,
@@ -47,7 +47,16 @@ function presets(api, opts = {}) {
         useBuiltIns: false
       }
     ],
-    [require('@babel/preset-react').default, {useBuiltIns: true}]
+    [
+      require('@babel/preset-react').default,
+      {
+        // use 'automatic' when this PR lands and all
+        // our verticals are using that version in PRO
+        // https://github.com/facebook/react/pull/18299
+        runtime: 'classic',
+        useBuiltIns: true
+      }
+    ]
   ]
 }
 
